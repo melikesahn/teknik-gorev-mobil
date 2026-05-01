@@ -26,9 +26,10 @@ const ONIZLEME_BOY = 96;
 const MOCK_API_URL = "https://postman-echo.com/post";
 const STORAGE_DRAFT = "hasar_bildirim_taslak";
 const STORAGE_GECMIS = "hasar_bildirim_gecmis";
-const TURUNCU = "#f97316";
-const TURUNCU_KOYU = "#c2410c";
-const KREM = "#fff7ed";
+const BG = "#FF0E0E";
+const TEXT = "#C20C0C";
+const TEXT_POST = "#fff7ed";
+const KART_BORDER = "#fed7aa";
 
 type Marker = { x: number; y: number };
 type YerelFoto = { uri: string; markers: Marker[] };
@@ -122,7 +123,7 @@ export default function App() {
       await AsyncStorage.removeItem(STORAGE_DRAFT);
       setTaslakVar(false);
     } catch {
-      /* yoksay */
+      
     }
   };
 
@@ -132,7 +133,7 @@ export default function App() {
     try {
       await AsyncStorage.setItem(STORAGE_GECMIS, JSON.stringify(yeni));
     } catch {
-      /* yoksay */
+      
     }
   };
 
@@ -187,7 +188,7 @@ export default function App() {
       return;
     }
     const sonuc = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
       quality: 0.9,
     });
     if (sonuc.canceled || !sonuc.assets[0]?.uri) return;
@@ -261,6 +262,12 @@ export default function App() {
         body: formData,
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+/**
+ * form data kontrolü 
+      const data = await res.json();
+      console.log("FILES:", data.files);
+      console.log("FORM:", data.form);*/
+
       const gonderilenFoto = fotograflar.length;
       await taslakSil();
       await gecmisEkle({
@@ -293,7 +300,7 @@ export default function App() {
       <View
         style={{
           flex: 1,
-          backgroundColor: TURUNCU,
+          backgroundColor: BG,
           padding: 24,
           paddingTop: ustBosluk,
           justifyContent: "center",
@@ -302,7 +309,7 @@ export default function App() {
         <Text style={{ fontSize: 26, fontWeight: "700", color: "#fff" }}>
           Bildirim alındı
         </Text>
-        <Text style={{ marginTop: 12, fontSize: 16, color: KREM }}>
+        <Text style={{ marginTop: 12, fontSize: 16, color: TEXT_POST }}>
           Hasar kaydınız multipart/form-data ile test sunucusuna iletildi.
           Teşekkürler.
         </Text>
@@ -327,9 +334,16 @@ export default function App() {
             padding: 16,
             borderRadius: 12,
             alignItems: "center",
+            borderWidth: 1.5,
+            borderColor: "#ffedd5",
+            shadowColor: "#000",
+            shadowOpacity: 0.14,
+            shadowRadius: 10,
+            shadowOffset: { width: 0, height: 6 },
+            elevation: 3,
           }}
         >
-          <Text style={{ color: TURUNCU_KOYU, fontWeight: "700" }}>Yeni bildirim</Text>
+          <Text style={{ color: TEXT, fontWeight: "700" }}>Yeni bildirim</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -350,7 +364,7 @@ export default function App() {
 
   if (ekran === "gecmis") {
     return (
-      <View style={{ flex: 1, backgroundColor: TURUNCU, paddingTop: ustBosluk }}>
+      <View style={{ flex: 1, backgroundColor: BG, paddingTop: ustBosluk }}>
         <View
           style={{
             flexDirection: "row",
@@ -384,13 +398,16 @@ export default function App() {
                 key={k.id}
                 style={{
                   backgroundColor: "#fff",
-                  borderRadius: 12,
+                  borderRadius: 14,
+                  borderWidth: 1,
+                  borderColor: KART_BORDER,
                   padding: 14,
                   marginBottom: 12,
-                  elevation: 2,
+                  elevation: 3,
                   shadowColor: "#000",
-                  shadowOpacity: 0.06,
-                  shadowRadius: 6,
+                  shadowOpacity: 0.08,
+                  shadowRadius: 8,
+                  shadowOffset: { width: 0, height: 4 },
                 }}
               >
                 <Text style={{ fontWeight: "700" }}>{k.hasarTuru}</Text>
@@ -424,7 +441,7 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: TURUNCU, paddingTop: ustBosluk }}>
+    <View style={{ flex: 1, backgroundColor: BG, paddingTop: ustBosluk }}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
@@ -445,28 +462,38 @@ export default function App() {
               void gecmisYukle();
               setEkran("gecmis");
             }}
+            style={{
+              backgroundColor: "#fff",
+              paddingHorizontal: 12,
+              paddingVertical: 8,
+              borderRadius: 999,
+              borderWidth: 1,
+              borderColor: "#ffedd5",
+            }}
           >
-            <Text style={{ color: "#fff", fontWeight: "600" }}>Geçmiş</Text>
+            <Text style={{ color: TEXT, fontWeight: "700" }}>Geçmiş</Text>
           </TouchableOpacity>
         </View>
 
         {taslakVar ? (
           <View
             style={{
-              backgroundColor: KREM,
+              backgroundColor: TEXT_POST,
               padding: 12,
               borderRadius: 10,
               marginBottom: 12,
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
+              borderWidth: 1,
+              borderColor: "#fdba74",
             }}
           >
-            <Text style={{ flex: 1, color: TURUNCU_KOYU }}>
+            <Text style={{ flex: 1, color: TEXT }}>
               Son gönderimden kalan taslak yüklü.
             </Text>
             <TouchableOpacity onPress={() => void taslakSil()}>
-              <Text style={{ color: TURUNCU_KOYU, fontWeight: "700" }}>Sil</Text>
+              <Text style={{ color: TEXT, fontWeight: "700" }}>Sil</Text>
             </TouchableOpacity>
           </View>
         ) : null}
@@ -475,11 +502,14 @@ export default function App() {
           style={{
             backgroundColor: "#fff",
             padding: 16,
-            borderRadius: 12,
-            elevation: 3,
+            borderRadius: 18,
+            borderWidth: 1,
+            borderColor: KART_BORDER,
+            elevation: 4,
             shadowColor: "#000",
-            shadowOpacity: 0.08,
-            shadowRadius: 8,
+            shadowOpacity: 0.1,
+            shadowRadius: 10,
+            shadowOffset: { width: 0, height: 6 },
           }}
         >
           <Text style={{ marginBottom: 10, fontWeight: "600" }}>
@@ -495,8 +525,13 @@ export default function App() {
                   paddingHorizontal: 14,
                   borderRadius: 20,
                   borderWidth: 1,
-                  borderColor: hasarTuru === tur ? TURUNCU : "#fed7aa",
-                  backgroundColor: hasarTuru === tur ? TURUNCU : "#fff",
+                  borderColor: hasarTuru === tur ? BG : "#fed7aa",
+                  backgroundColor: hasarTuru === tur ? BG : "#fff",
+                  shadowColor: "#000",
+                  shadowOpacity: hasarTuru === tur ? 0.12 : 0.04,
+                  shadowRadius: 6,
+                  shadowOffset: { width: 0, height: 2 },
+                  elevation: hasarTuru === tur ? 2 : 0,
                 }}
               >
                 <Text
@@ -528,9 +563,10 @@ export default function App() {
               borderWidth: 1,
               borderColor: gonderimDenendi && !aciklama.trim() ? "#f87171" : "#ddd",
               borderRadius: 10,
-              padding: 10,
+              padding: 12,
               minHeight: 88,
               textAlignVertical: "top",
+              backgroundColor: "#fffaf5",
             }}
           />
           {gonderimDenendi && !aciklama.trim() ? (
@@ -551,13 +587,17 @@ export default function App() {
           <View
             style={{
               backgroundColor:
-                fotograflar.length >= MIN_FOTO ? "#fff" : KREM,
+                fotograflar.length >= MIN_FOTO ? "#fff" : TEXT_POST,
               borderRadius: 10,
               padding: 12,
               marginBottom: 12,
               borderWidth: 1,
               borderColor:
                 fotograflar.length >= MIN_FOTO ? "#fdba74" : "#fb923c",
+              shadowColor: "#000",
+              shadowOpacity: 0.04,
+              shadowRadius: 4,
+              shadowOffset: { width: 0, height: 2 },
             }}
           >
             <Text style={{ fontWeight: "700", fontSize: 15, color: "#111827" }}>
@@ -587,9 +627,16 @@ export default function App() {
                 padding: 12,
                 borderRadius: 10,
                 alignItems: "center",
+                borderWidth: 1.5,
+                borderColor: "#fdba74",
+                shadowColor: "#000",
+                shadowOpacity: 0.08,
+                shadowRadius: 8,
+                shadowOffset: { width: 0, height: 4 },
+                elevation: 2,
               }}
             >
-              <Text style={{ color: TURUNCU_KOYU, fontWeight: "700" }}>Kamera</Text>
+              <Text style={{ color: TEXT, fontWeight: "700" }}>Kamera</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => void galeriAc()}
@@ -599,9 +646,16 @@ export default function App() {
                 padding: 12,
                 borderRadius: 10,
                 alignItems: "center",
+                borderWidth: 1.5,
+                borderColor: "#fdba74",
+                shadowColor: "#000",
+                shadowOpacity: 0.08,
+                shadowRadius: 8,
+                shadowOffset: { width: 0, height: 4 },
+                elevation: 2,
               }}
             >
-              <Text style={{ color: TURUNCU_KOYU, fontWeight: "700" }}>Galeri</Text>
+              <Text style={{ color: TEXT, fontWeight: "700" }}>Galeri</Text>
             </TouchableOpacity>
           </View>
 
@@ -628,6 +682,8 @@ export default function App() {
                       height: ONIZLEME_BOY,
                       borderRadius: 10,
                       backgroundColor: "#e5e7eb",
+                      borderWidth: 1.5,
+                      borderColor: "#fdba74",
                     }}
                   />
                   {f.markers.map((m, mi) => (
@@ -668,7 +724,7 @@ export default function App() {
                 </TouchableOpacity>
                 {f.markers.length > 0 ? (
                   <TouchableOpacity onPress={() => markerleriTemizle(index)}>
-                    <Text style={{ fontSize: 11, color: TURUNCU_KOYU, marginTop: 4 }}>
+                    <Text style={{ fontSize: 11, color: TEXT, marginTop: 4 }}>
                       İşaretleri temizle
                     </Text>
                   </TouchableOpacity>
@@ -684,20 +740,27 @@ export default function App() {
 
           <TouchableOpacity
             onPress={() => void gonder()}
-            disabled={yukleniyor}
+            disabled={yukleniyor || !formGecerli}
             style={{
               backgroundColor: "#fff",
               padding: 15,
-              borderRadius: 10,
+              borderRadius: 12,
               marginTop: 22,
               alignItems: "center",
-              opacity: yukleniyor ? 0.7 : 1,
+              opacity: yukleniyor || !formGecerli ? 0.7 : 1,
+              borderWidth: 1.5,
+              borderColor: "#fdba74",
+              shadowColor: "#000",
+              shadowOpacity: 0.12,
+              shadowRadius: 10,
+              shadowOffset: { width: 0, height: 5 },
+              elevation: 3,
             }}
           >
             {yukleniyor ? (
-              <ActivityIndicator color={TURUNCU_KOYU} />
+              <ActivityIndicator color={TEXT} />
             ) : (
-              <Text style={{ color: TURUNCU_KOYU, fontWeight: "700" }}>
+              <Text style={{ color: TEXT, fontWeight: "700" }}>
                 Multipart olarak gönder
               </Text>
             )}

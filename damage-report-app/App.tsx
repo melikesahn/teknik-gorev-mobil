@@ -761,7 +761,7 @@ export default function App() {
               <ActivityIndicator color={TEXT} />
             ) : (
               <Text style={{ color: TEXT, fontWeight: "700" }}>
-                Multipart olarak gönder
+                Bildirimi gönder
               </Text>
             )}
           </TouchableOpacity>

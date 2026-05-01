@@ -1,4 +1,4 @@
-# teknik-gorev-mobil
+# React Native — fotoğraflı hasar bildirim formu
 
 React Native (Expo) ile **fotoğraflı hasar bildirim formu**. Uygulama kodu `damage-report-app` klasöründedir.
 

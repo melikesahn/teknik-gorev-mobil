@@ -2,20 +2,21 @@
 
 React Native (Expo) ile **fotoğraflı hasar bildirim formu**. Uygulama kodu `damage-report-app` klasöründedir.
 
-## Özellikler (teknik görev uyumu)
+## Özellikler
 
-| Beklenti | Durum |
-|----------|--------|
-| Kamera (`expo-camera`) ve galeri (`expo-image-picker`), izin yönetimi | Var |
-| En az 3 fotoğraf, önizleme, silme | Var |
-| Hasar türü chip seçimi (zorunlu) | Var |
-| Form validasyonu; eksik alanda gönderim uyarısı | Var |
-| Gönderimde loading; tamamlanınca onay ekranı | Var |
-| `multipart/form-data` ile mock API (`https://postman-echo.com/post`) | Var |
-| Yerel dosya URI (base64 gönderim yok) | Var |
-| Bonus: fotoğraf üzerinde dokunarak hasar noktası | Var |
-| Bonus: gönderim hatasında taslak kaydı (AsyncStorage) | Var |
-| Bonus: geçmiş ekranı | Var |
+| Özellik                | Açıklama                                                   |
+| ---------------------- | ---------------------------------------------------------- |
+| Kamera ve Galeri       | `expo-camera`, `expo-image-picker` ile izin yönetimi dahil |
+| Fotoğraf Yönetimi      | En az 3 fotoğraf ekleme, önizleme ve silme                 |
+| Hasar Tipi Seçimi      | Zorunlu chip selection                                     |
+| Form Validasyonu       | Eksik alanlarda gönderimi engelleme                        |
+| Gönderim Durumu        | Loading state ve başarılı işlem sonrası onay ekranı        |
+| API Entegrasyonu       | `multipart/form-data` ile `https://postman-echo.com/post`  |
+| Dosya Yapısı           | Base64 kullanılmadan yalnızca local URI                    |
+| Etkileşimli İşaretleme | Fotoğraf üzerinde hasar noktası seçimi                     |
+| Offline Destek         | Hata durumunda AsyncStorage ile taslak kaydı               |
+| Geçmiş Kayıtlar        | Gönderilen taleplerin listelenmesi                         |
+
 
 ## Kurulum
 
